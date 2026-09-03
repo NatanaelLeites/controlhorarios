@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horario de los gurises</title>
+    <link rel="stylesheet" href="./css/estilos.css">
+</head>
+
+<body>
+    <main class="app-container">
+        <header>
+            <h1>Horario de los <span>Gurises</span></h1>
+            <div class="header-actions">
+                <button id="btnToggleAdmin" class="btn-link">Ver Historial / Admin</button>
+                <div class="user-selector">
+                    <label for="userSelect">Persona:</label>
+                    <select id="userSelect">
+                        <option value="Diego">Diego</option>
+                        <option value="Nata">Nata</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <div id="mainWorkspace">
+            <section class="attendance-card">
+                <h2>Asistencia</h2>
+                <div class="button-group">
+                    <button id="btnIn" class="btn btn-in">Marcar Entrada</button>
+                    <button id="btnOut" class="btn btn-out">Marcar Salida</button>
+                </div>
+            </section>
+
+            <div class="stats-grid">
+                <div class="card stats-card">
+                    <h3>Resumen Diego (Mes Actual)</h3>
+                    <div id="stats-Diego" class="total">Horas: 0.00h | $: 0.00</div>
+                </div>
+                <div class="card stats-card">
+                    <h3>Resumen Nata (Mes Actual)</h3>
+                    <div id="stats-Nata" class="total">Horas: 0.00h | $: 0.00</div>
+                </div>
+            </div>
+
+            <section class="expense-card">
+                <h2>Registrar Gasto</h2>
+                <form id="expenseForm" class="expense-form">
+                    <input type="text" id="expConcept" placeholder="Concepto" required>
+                    <input type="number" id="expAmount" placeholder="Monto ($)" required>
+                    <button type="submit" class="btn btn-save">Guardar Gasto</button>
+                </form>
+            </section>
+
+            <section class="history-card">
+                <h2>Actividad de Hoy</h2>
+                <div class="table-wrapper">
+                    <table id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>Persona</th>
+                                <th>Tipo</th>
+                                <th>Detalle</th>
+                                <th>Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <div id="adminWorkspace" class="hidden">
+            <section class="history-card">
+                <div class="admin-header-box">
+                    <h2>Historial y Archivo Pasado</h2>
+                    <button id="btnBackToMain" class="btn-link">← Volver a Hoy</button>
+                </div>
+                
+                <div class="filters" style="margin-top: 15px; display: flex; gap: 10px;">
+                    <input type="month" id="monthFilter" class="user-selector-input">
+                    <select id="userFilter" class="user-selector-input">
+                        <option value="Todos">Todos los usuarios</option>
+                        <option value="Diego">Diego</option>
+                        <option value="Nata">Nata</option>
+                    </select>
+                </div>
+
+                <div class="table-wrapper" style="margin-top: 20px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Usuario</th>
+                                <th>Evento</th>
+                                <th>Detalle</th>
+                                <th style="text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminHistoryBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script type="module" src="./js/script.js?v=2"></script>
+</body>
+
+</html>
