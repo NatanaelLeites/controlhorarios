@@ -77,7 +77,7 @@
                     <h2>Historial y Archivo Pasado</h2>
                     <button id="btnBackToMain" class="btn-link">← Volver a Hoy</button>
                 </div>
-                
+
                 <div class="filters" style="margin-top: 15px; display: flex; gap: 10px;">
                     <input type="month" id="monthFilter" class="user-selector-input">
                     <select id="userFilter" class="user-selector-input">
@@ -103,6 +103,29 @@
                 </div>
             </section>
         </div>
+        <!-- MODAL DE CONFIRMACIÓN DE BORRADO -->
+        <dialog id="deleteModal" class="modal">
+            <div class="modal-content">
+                <h3>¿Eliminar registro?</h3>
+                <p>Esta acción eliminará el registro permanentemente de la base de datos.</p>
+                <div class="modal-actions">
+                    <button id="btnCancelDelete" class="btn btn-secondary">Cancelar</button>
+                    <button id="btnConfirmDelete" class="btn btn-out">Eliminar</button>
+                </div>
+            </div>
+        </dialog>
+
+        <!-- MODAL DE EDICIÓN DE DETALLE -->
+        <dialog id="editModal" class="modal">
+            <div class="modal-content">
+                <h3>Editar Detalle</h3>
+                <input type="text" id="editDetailInput" class="modal-input" placeholder="Nuevo detalle...">
+                <div class="modal-actions">
+                    <button id="btnCancelEdit" class="btn btn-secondary">Cancelar</button>
+                    <button id="btnSaveEdit" class="btn btn-save">Guardar Cambios</button>
+                </div>
+            </div>
+        </dialog>
     </main>
     <script type="module" src="./js/script.js?v=2"></script>
 </body>

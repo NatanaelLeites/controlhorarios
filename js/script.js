@@ -32,17 +32,50 @@ btnBackToMain.onclick = () => {
     mainWorkspace.classList.remove('hidden');
 };
 
-// --- FUNCIONES GLOBALES (Edición/Borrado asignadas a window) ---
+// --- MANEJO DE MODALES (Edición y Borrado) ---
+const deleteModal = document.getElementById('deleteModal');
+const editModal = document.getElementById('editModal');
+const editDetailInput = document.getElementById('editDetailInput');
+
+let targetRecordId = null;
+
+// Modal de Borrado
 window.borrarRegistro = (id) => {
-    if(confirm("¿Eliminar este registro permanentemente de la base de datos?")) {
-        remove(ref(db, `registros/${id}`));
+    targetRecordId = id;
+    deleteModal.showModal();
+};
+
+document.getElementById('btnCancelDelete').onclick = () => {
+    deleteModal.close();
+    targetRecordId = null;
+};
+
+document.getElementById('btnConfirmDelete').onclick = () => {
+    if (targetRecordId) {
+        remove(ref(db, `registros/${targetRecordId}`));
+        deleteModal.close();
+        targetRecordId = null;
     }
 };
 
+// Modal de Edición
 window.editarDetalle = (id, valorActual) => {
-    const nuevo = prompt("Editar detalle del registro:", valorActual);
-    if (nuevo !== null) {
-        update(ref(db, `registros/${id}`), { detail: nuevo });
+    targetRecordId = id;
+    editDetailInput.value = valorActual;
+    editModal.showModal();
+};
+
+document.getElementById('btnCancelEdit').onclick = () => {
+    editModal.close();
+    targetRecordId = null;
+};
+
+document.getElementById('btnSaveEdit').onclick = () => {
+    const nuevoDetalle = editDetailInput.value.trim();
+    if (targetRecordId && nuevoDetalle !== "") {
+        update(ref(db, `registros/${targetRecordId}`), { detail: nuevoDetalle });
+        editModal.close();
+        targetRecordId = null;
     }
 };
 
@@ -50,7 +83,7 @@ window.editarDetalle = (id, valorActual) => {
 const saveEntry = (type, detail) => {
     const user = document.getElementById('userSelect').value;
     const now = new Date();
-    
+
     const newEntry = {
         user: user,
         type: type,
@@ -67,7 +100,7 @@ const saveEntry = (type, detail) => {
 const procesarYRenderizarTodo = (data) => {
     const historyBody = document.getElementById('historyBody');
     const adminHistoryBody = document.getElementById('adminHistoryBody');
-    
+
     const ahora = new Date();
     const todayStr = ahora.toLocaleDateString();
     const mesActualStr = `${ahora.getFullYear()}-${String(ahora.getMonth() + 1).padStart(2, '0')}`;
@@ -132,7 +165,7 @@ const procesarYRenderizarTodo = (data) => {
                 <td>${item.user}</td>
                 <td>${item.type}</td>
                 <td>${item.detail}</td>
-                <td>${new Date(item.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                <td>${new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
             </tr>
         `).join('');
     }
