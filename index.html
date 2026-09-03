@@ -11,7 +11,7 @@
 <body>
     <main class="app-container">
         <header>
-            <h1>Horario de los <span>Gurises</span></h1>
+            <h1>WorkTracker <span>& Expenses</span></h1>
             <div class="header-actions">
                 <button id="btnToggleAdmin" class="btn-link">Ver Historial / Admin</button>
                 <div class="user-selector">
@@ -33,15 +33,8 @@
                 </div>
             </section>
 
-            <div class="stats-grid">
-                <div class="card stats-card">
-                    <h3>Resumen Diego (Mes Actual)</h3>
-                    <div id="stats-Diego" class="total">Horas: 0.00h | $: 0.00</div>
-                </div>
-                <div class="card stats-card">
-                    <h3>Resumen Nata (Mes Actual)</h3>
-                    <div id="stats-Nata" class="total">Horas: 0.00h | $: 0.00</div>
-                </div>
+            <div id="statsGrid" class="stats-grid">
+                <!-- Las tarjetas de usuarios se renderizan dinámicamente aquí -->
             </div>
 
             <section class="expense-card">

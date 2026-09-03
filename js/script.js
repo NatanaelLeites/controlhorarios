@@ -100,24 +100,36 @@ const saveEntry = (type, detail) => {
 const procesarYRenderizarTodo = (data) => {
     const historyBody = document.getElementById('historyBody');
     const adminHistoryBody = document.getElementById('adminHistoryBody');
+    const statsGrid = document.getElementById('statsGrid');
 
     const ahora = new Date();
     const todayStr = ahora.toLocaleDateString();
     const mesActualStr = `${ahora.getFullYear()}-${String(ahora.getMonth() + 1).padStart(2, '0')}`;
 
-    // Reset de totales para el mes en curso (Tarjeta principal)
-    const totalesMesActual = {
-        "Diego": { horas: 0, gastos: 0, ultimaEntrada: null },
-        "Nata": { horas: 0, gastos: 0, ultimaEntrada: null }
-    };
+    // Obtener la lista de usuarios directamente de los <option> del selector
+    const userSelect = document.getElementById('userSelect');
+    const usuariosDisponibles = Array.from(userSelect.options).map(opt => opt.value);
+
+    // Inicializar estructura de totales dinámicamente
+    const totalesMesActual = {};
+    usuariosDisponibles.forEach(u => {
+        totalesMesActual[u] = { horas: 0, gastos: 0, ultimaEntrada: null };
+    });
 
     if (!data) {
         historyBody.innerHTML = "<tr><td colspan='4'>No hay datos.</td></tr>";
         adminHistoryBody.innerHTML = "<tr><td colspan='5'>No hay datos archivados.</td></tr>";
+        // Renderizar tarjetas vacías
+        statsGrid.innerHTML = usuariosDisponibles.map(u => `
+            <div class="card stats-card">
+                <h3>Resumen ${u} (Mes Actual)</h3>
+                <div class="total">Horas: 0.00h | $: 0.00</div>
+            </div>
+        `).join('');
         return;
     }
 
-    // Convertimos a array con IDs
+    // Convertimos a array ordenado cronológicamente
     const todosLosRegistros = Object.entries(data)
         .map(([id, val]) => ({ id, ...val }))
         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
@@ -125,7 +137,7 @@ const procesarYRenderizarTodo = (data) => {
     // --- PROCESAMIENTO A: Tarjetas del Mes Corriente ---
     todosLosRegistros.forEach(reg => {
         const u = reg.user;
-        if (!totalesMesActual[u]) return;
+        if (!totalesMesActual[u]) return; // Si hay un registro de un usuario no activo, lo ignora en el resumen
 
         const mesReg = reg.timestamp ? reg.timestamp.substring(0, 7) : '';
         if (mesReg === mesActualStr) {
@@ -145,30 +157,13 @@ const procesarYRenderizarTodo = (data) => {
         }
     });
 
-    for (const user in totalesMesActual) {
-        const div = document.getElementById(`stats-${user}`);
-        if (div) {
-            div.innerText = `Horas: ${totalesMesActual[user].horas.toFixed(2)}h | $: ${totalesMesActual[user].gastos.toFixed(2)}`;
-        }
-    }
-
-    // --- PROCESAMIENTO B: Tabla de "Hoy" ---
-    const entradasDeHoy = todosLosRegistros
-        .filter(item => item.dateStr === todayStr)
-        .reverse();
-
-    if (entradasDeHoy.length === 0) {
-        historyBody.innerHTML = "<tr><td colspan='4'>No hay actividad hoy.</td></tr>";
-    } else {
-        historyBody.innerHTML = entradasDeHoy.map(item => `
-            <tr>
-                <td>${item.user}</td>
-                <td>${item.type}</td>
-                <td>${item.detail}</td>
-                <td>${new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-            </tr>
-        `).join('');
-    }
+    // Renderizar dinámicamente las tarjetas de resumen
+    statsGrid.innerHTML = Object.entries(totalesMesActual).map(([u, datos]) => `
+        <div class="card stats-card">
+            <h3>Resumen ${u} (Mes Actual)</h3>
+            <div class="total">Horas: ${datos.horas.toFixed(2)}h | $: ${datos.gastos.toFixed(2)}</div>
+        </div>
+    `).join('');
 
     // --- PROCESAMIENTO C: Historial Avanzado con Filtros ---
     const filtroMesSeleccionado = monthFilter.value;
