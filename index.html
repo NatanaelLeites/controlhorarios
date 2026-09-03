@@ -13,9 +13,11 @@
         <header>
             <h1>WorkTracker <span>& Expenses</span></h1>
             <div class="header-actions">
-                <button id="btnToggleAdmin" class="btn-link">Ver Historial / Admin</button>
+                <button id="btnToggleAdmin" class="btn btn-nav">
+                    <span id="btnNavIcon">📊</span> <span id="btnNavText">Ver Historial</span>
+                </button>
                 <div class="user-selector">
-                    <label for="userSelect">Persona:</label>
+                    <label for="userSelect">Usuario:</label>
                     <select id="userSelect">
                         <option value="Diego">Diego</option>
                         <option value="Nata">Nata</option>
@@ -68,7 +70,7 @@
             <section class="history-card">
                 <div class="admin-header-box">
                     <h2>Historial y Archivo Pasado</h2>
-                    <button id="btnBackToMain" class="btn-link">← Volver a Hoy</button>
+                    <!-- <button id="btnBackToMain" class="btn-link">← Volver a Hoy</button> -->
                 </div>
 
                 <div class="filters" style="margin-top: 15px; display: flex; gap: 10px;">

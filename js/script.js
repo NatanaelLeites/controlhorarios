@@ -7,11 +7,31 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const dbRef = ref(db, 'registros');
 
-// --- CONTROLES DE INTERFAZ (Tabs virtuales) ---
+// --- CONTROLES DE INTERFAZ (Navegación Dinámica) ---
 const mainWorkspace = document.getElementById('mainWorkspace');
 const adminWorkspace = document.getElementById('adminWorkspace');
 const btnToggleAdmin = document.getElementById('btnToggleAdmin');
-const btnBackToMain = document.getElementById('btnBackToMain');
+const btnNavText = document.getElementById('btnNavText');
+const btnNavIcon = document.getElementById('btnNavIcon');
+
+// Alternar entre Vista Principal e Historial
+btnToggleAdmin.onclick = () => {
+    const mostrandoAdmin = mainWorkspace.classList.contains('hidden');
+
+    if (mostrandoAdmin) {
+        // Volver a la pantalla principal
+        adminWorkspace.classList.add('hidden');
+        mainWorkspace.classList.remove('hidden');
+        btnNavText.innerText = 'Ver Historial';
+        btnNavIcon.innerText = '📊';
+    } else {
+        // Ir a la pantalla de Historial
+        mainWorkspace.classList.add('hidden');
+        adminWorkspace.classList.remove('hidden');
+        btnNavText.innerText = 'Volver a Hoy';
+        btnNavIcon.innerText = '🏠';
+    }
+};
 
 const monthFilter = document.getElementById('monthFilter');
 const userFilter = document.getElementById('userFilter');
@@ -21,16 +41,6 @@ let cachedSnapshotData = null;
 // Seteamos el mes actual por defecto
 const d = new Date();
 monthFilter.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-
-// Eventos para cambiar de pantalla
-btnToggleAdmin.onclick = () => {
-    mainWorkspace.classList.add('hidden');
-    adminWorkspace.classList.remove('hidden');
-};
-btnBackToMain.onclick = () => {
-    adminWorkspace.classList.add('hidden');
-    mainWorkspace.classList.remove('hidden');
-};
 
 // --- MANEJO DE MODALES (Edición y Borrado) ---
 const deleteModal = document.getElementById('deleteModal');

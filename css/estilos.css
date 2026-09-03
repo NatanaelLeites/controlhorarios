@@ -88,6 +88,36 @@ section {
   color: white;
 }
 
+/* ==========================================================================
+   Botón de Navegación Principal (Navegación Dinámica)
+   ========================================================================== */
+.btn-nav {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border: 1px solid #333;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-nav:hover {
+  background-color: #333;
+  border-color: #2979ff;
+  color: #fff;
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.btn-nav:active {
+  transform: translateY(0);
+}
+
 .expense-form {
   display: flex;
   flex-direction: column;
